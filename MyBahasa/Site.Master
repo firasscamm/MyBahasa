@@ -1,0 +1,115 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="MyBahasa.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <title>Belajar Bahasa Melayu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        /* === GLOBAL === */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #ffffff;
+        }
+
+        /* === HEADER === */
+        header {
+            border-bottom: 1px solid #e5e5e5;
+            background-color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #111;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .logo svg {
+            width: 22px;
+            height: 22px;
+            stroke: #007b83;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #222;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #007b83;
+        }
+
+        /* === CONTENT === */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 10px;
+            font-size: 14px;
+            color: #888;
+            border-top: 1px solid #eee;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header>
+            <div class="nav-container">
+                <!-- Left: logo -->
+                <asp:HyperLink ID="lnkHome" runat="server" NavigateUrl="~/home.aspx" CssClass="logo">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20v14H6.5A2.5 2.5 0 0 1 4 18.5V4.5z"></path>
+                    </svg>
+                    MyBahasa Melayu
+                </asp:HyperLink>
+
+                <!-- Right: navigation -->
+                <div class="nav-links">
+                    <asp:HyperLink ID="lnkLearn" runat="server" NavigateUrl="~/learn.aspx">Learn</asp:HyperLink>
+                    <asp:HyperLink ID="lnkProgress" runat="server" NavigateUrl="~/progress.aspx">Progress</asp:HyperLink>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+        </div>
+
+        <footer>
+            © 2025 Belajar Bahasa Melayu. All rights reserved.
+        </footer>
+    </form>
+</body>
+</html>

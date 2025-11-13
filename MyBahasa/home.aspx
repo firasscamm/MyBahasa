@@ -152,6 +152,43 @@
             background-color: #e6f5f6;
         }
 
+        /* Forum Styling */
+        .forum-section {
+            margin: 80px auto;
+            max-width: 1000px;
+            padding: 0 20px;
+        }
+
+        .forum-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .forum-message {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #007b83;
+            transition: all 0.2s ease;
+        }
+
+        .forum-message:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+
+        .post-form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
         /* Footer tagline */
         .home-footer {
             text-align: center;
@@ -234,6 +271,62 @@
                 </ul>
                 <a href="learn.aspx" class="path-btn">Start Advanced</a>
             </div>
+        </div>
+    </section>
+
+    <!-- Discussion Forum Section -->
+    <section class="forum-section">
+        <h2 style="text-align: center; margin-bottom: 40px; color: #007b83;">Community Discussion Forum</h2>
+        
+        <!-- Forum Messages Display -->
+        <div class="forum-container">
+            <h3 style="color: #007b83; margin-bottom: 20px;">Recent Discussions</h3>
+            
+            <asp:Repeater ID="rptForumMessages" runat="server">
+                <ItemTemplate>
+                    <div class="forum-message">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong style="color: #007b83;"><%# Eval("name") %></strong>
+                            <span style="color: #666; font-size: 12px;"><%# Eval("posted_at", "{0:MMM dd, yyyy HH:mm}") %></span>
+                        </div>
+                        <p style="margin: 0; color: #333; line-height: 1.5;"><%# Eval("message_text") %></p>
+                    </div>
+                </ItemTemplate>
+            </asp:Repeater>
+            
+            <asp:Label ID="lblNoMessages" runat="server" Text="No messages yet. Be the first to start the discussion!" 
+                      Visible="false" Style="text-align: center; color: #666; display: block; padding: 40px;"></asp:Label>
+        </div>
+
+        <!-- Post Message Form -->
+        <div class="post-form-container">
+            <asp:Panel ID="pnlPostForm" runat="server" Visible="false">
+                <h3 style="color: #007b83; margin-bottom: 20px;">Post a Message</h3>
+                <div style="margin-bottom: 20px;">
+                    <asp:TextBox ID="txtMessage" runat="server" TextMode="MultiLine" Rows="4" 
+                                placeholder="Share your thoughts, ask questions, or help other learners..."
+                                Style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Segoe UI', sans-serif; resize: vertical;"></asp:TextBox>
+                    <asp:RequiredFieldValidator ID="rfvMessage" runat="server" ControlToValidate="txtMessage"
+                                              ErrorMessage="Please enter a message" ForeColor="Red" Display="Dynamic"></asp:RequiredFieldValidator>
+                </div>
+                <asp:Button ID="btnPostMessage" runat="server" Text="Post Message" 
+                           OnClick="btnPostMessage_Click" 
+                           Style="background-color: #007b83; color: white; border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-size: 16px;" />
+            </asp:Panel>
+
+            <!-- Login/Register Prompt for Guests -->
+            <asp:Panel ID="pnlGuestPrompt" runat="server" Visible="false">
+                <div style="text-align: center; padding: 30px;">
+                    <h4 style="color: #007b83; margin-bottom: 15px;">Join the Discussion</h4>
+                    <p style="color: #666; margin-bottom: 20px;">Login or register to participate in the community forum and connect with other learners.</p>
+                    <div>
+                        <a href="login.aspx" class="btn-login" style="display: inline-block; margin: 0 8px; padding: 12px 28px; border-radius: 6px; font-size: 16px; font-weight: 500; text-decoration: none; transition: background-color 0.2s ease; background-color: #007b83; color: white;">Login</a>
+                        <a href="register.aspx" class="btn-register" style="display: inline-block; margin: 0 8px; padding: 12px 28px; border-radius: 6px; font-size: 16px; font-weight: 500; text-decoration: none; transition: background-color 0.2s ease; border: 1px solid #ccc; color: #333; background-color: transparent;">Register</a>
+                    </div>
+                </div>
+            </asp:Panel>
+
+            <asp:Label ID="lblForumMessage" runat="server" Text="" Style="display: block; margin-top: 15px; padding: 10px; border-radius: 4px;"></asp:Label>
         </div>
     </section>
 

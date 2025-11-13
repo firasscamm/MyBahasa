@@ -55,7 +55,7 @@ namespace MyBahasa
             pnlForm.Visible = true;
             lblFormTitle.Text = "Add New Lesson";
             hfLessonId.Value = "";
-            txtTitle.Text = txtContent.Text = txtAudio.Text = txtVideo.Text = "";
+            txtTitle.Text = txtContent.Text = txtAudio.Text = "";
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -72,13 +72,13 @@ namespace MyBahasa
 
                 if (hfLessonId.Value == "")
                 {
-                    cmd = new SqlCommand(@"INSERT INTO Lessons (course_id, title, content_text, audio_url, video_url) 
-                                           VALUES (@course_id, @title, @content_text, @audio_url, @video_url)", con);
+                    cmd = new SqlCommand(@"INSERT INTO Lessons (course_id, title, content_text, audio_url) 
+                                           VALUES (@course_id, @title, @content_text, @audio_url)", con);
                 }
                 else
                 {
                     cmd = new SqlCommand(@"UPDATE Lessons 
-                                           SET title=@title, content_text=@content_text, audio_url=@audio_url, video_url=@video_url 
+                                           SET title=@title, content_text=@content_text, audio_url=@audio_url 
                                            WHERE lesson_id=@id", con);
                     cmd.Parameters.AddWithValue("@id", hfLessonId.Value);
                 }
@@ -87,7 +87,6 @@ namespace MyBahasa
                 cmd.Parameters.AddWithValue("@title", txtTitle.Text.Trim());
                 cmd.Parameters.AddWithValue("@content_text", txtContent.Text.Trim());
                 cmd.Parameters.AddWithValue("@audio_url", txtAudio.Text.Trim());
-                cmd.Parameters.AddWithValue("@video_url", txtVideo.Text.Trim());
                 cmd.ExecuteNonQuery();
             }
 
@@ -114,7 +113,6 @@ namespace MyBahasa
                         txtTitle.Text = dr["title"].ToString();
                         txtContent.Text = dr["content_text"].ToString();
                         txtAudio.Text = dr["audio_url"].ToString();
-                        txtVideo.Text = dr["video_url"].ToString();
                         pnlForm.Visible = true;
                         lblFormTitle.Text = "Edit Lesson";
                     }
@@ -133,7 +131,11 @@ namespace MyBahasa
             }
             else if (e.CommandName == "ManagePhrases")
             {
-                Response.Redirect("ManagePhrases.aspx?lesson_id=" + id);
+                Response.Redirect("ManagePhrases.aspx?lesson_id=" + id + "&course_id=" + courseId);
+            }
+            else if (e.CommandName == "ManageQuestions")
+            {
+                Response.Redirect("ManageQuestions.aspx?lesson_id=" + id);
             }
         }
     }

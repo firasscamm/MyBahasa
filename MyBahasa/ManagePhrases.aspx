@@ -36,76 +36,83 @@
 </head>
 
 <body>
-    <form id="form1" runat="server">
-        <div class="container">
-            <h2>Manage Phrases</h2>
-            <p><a href="ManageLessons.aspx?course_id=<%= Request.QueryString["course_id"] %>">← Back to Lessons</a></p>
-            <hr />
+<form id="form1" runat="server">
+    <div class="container">
+        <h2>Manage Phrases</h2>
+        <p><a href="ManageLessons.aspx?course_id=<%= Request.QueryString["course_id"] %>">← Back to Lessons</a></p>
+        <hr />
 
-            <asp:Label ID="lblLessonTitle" runat="server" Font-Bold="True" Font-Size="Large"></asp:Label>
-            <hr />
+        <asp:Label ID="lblLessonTitle" runat="server" Font-Bold="True" Font-Size="Large"></asp:Label>
+        <hr />
+
+        <div class="mb-3">
+            <asp:Button ID="btnAddNew" runat="server" Text="Add New Phrase" CssClass="btn-primary" OnClick="btnAddNew_Click" />
+        </div>
+
+        <asp:Panel ID="pnlForm" runat="server" Visible="false">
+            <h4><asp:Label ID="lblFormTitle" runat="server" Text="Add Phrase"></asp:Label></h4>
 
             <div class="mb-3">
-                <asp:Button ID="btnAddNew" runat="server" Text="Add New Phrase" CssClass="btn-primary" OnClick="btnAddNew_Click" />
+                <label>Malay Text:</label><br />
+                <asp:TextBox ID="txtMalay" runat="server" CssClass="form-control" Width="100%" />
             </div>
 
-            <asp:Panel ID="pnlForm" runat="server" Visible="false">
-                <h4><asp:Label ID="lblFormTitle" runat="server" Text="Add Phrase"></asp:Label></h4>
+            <div class="mb-3">
+                <label>English Text:</label><br />
+                <asp:TextBox ID="txtEnglish" runat="server" CssClass="form-control" Width="100%" />
+            </div>
 
-                <div class="mb-3">
-                    <label>Malay Text:</label><br />
-                    <asp:TextBox ID="txtMalay" runat="server" CssClass="form-control" Width="100%" />
-                </div>
+            <div class="mb-3">
+                <label>Pronunciation:</label><br />
+                <asp:TextBox ID="txtPronunciation" runat="server" CssClass="form-control" Width="100%" />
+            </div>
 
-                <div class="mb-3">
-                    <label>English Text:</label><br />
-                    <asp:TextBox ID="txtEnglish" runat="server" CssClass="form-control" Width="100%" />
-                </div>
+            <div class="mb-3">
+                <label>Cultural Note:</label><br />
+                <asp:TextBox ID="txtNote" runat="server" CssClass="form-control" Width="100%" />
+            </div>
 
-                <div class="mb-3">
-                    <label>Pronunciation:</label><br />
-                    <asp:TextBox ID="txtPronunciation" runat="server" CssClass="form-control" Width="100%" />
-                </div>
+            <div class="mb-3">
+                <label>Audio URL:</label><br />
+                <asp:TextBox ID="txtAudio" runat="server" CssClass="form-control" Width="100%" />
+            </div>
 
-                <div class="mb-3">
-                    <label>Cultural Note:</label><br />
-                    <asp:TextBox ID="txtNote" runat="server" CssClass="form-control" Width="100%" />
-                </div>
+            <div class="mb-3">
+                <label>Video URL:</label><br />
+                <asp:TextBox ID="txtVideo" runat="server" CssClass="form-control" Width="100%" />
+            </div>
 
-                <div class="mb-3">
-                    <label>Audio URL:</label><br />
-                    <asp:TextBox ID="txtAudio" runat="server" CssClass="form-control" Width="100%" />
-                </div>
+            <asp:HiddenField ID="hfPhraseId" runat="server" />
 
-                <asp:HiddenField ID="hfPhraseId" runat="server" />
+            <div class="mb-3">
+                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn-primary" OnClick="btnSave_Click" />
+                <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn-secondary" OnClick="btnCancel_Click" />
+            </div>
+            <hr />
+        </asp:Panel>
 
-                <div class="mb-3">
-                    <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn-primary" OnClick="btnSave_Click" />
-                    <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn-secondary" OnClick="btnCancel_Click" />
-                </div>
-                <hr />
-            </asp:Panel>
+        <asp:GridView ID="gvPhrases" runat="server" AutoGenerateColumns="False" CssClass="table"
+            DataKeyNames="phrase_id" OnRowCommand="gvPhrases_RowCommand">
+            <Columns>
+                <asp:BoundField DataField="phrase_id" HeaderText="ID" />
+                <asp:BoundField DataField="malay_text" HeaderText="Malay" />
+                <asp:BoundField DataField="english_text" HeaderText="English" />
+                <asp:BoundField DataField="pronunciation" HeaderText="Pronunciation" />
+                <asp:BoundField DataField="cultural_note" HeaderText="Note" />
+                <asp:BoundField DataField="audio_url" HeaderText="Audio" />
+                <asp:BoundField DataField="video_url" HeaderText="Video" />
+                <asp:TemplateField HeaderText="Actions">
+                    <ItemTemplate>
+                        <asp:Button runat="server" CommandName="EditPhrase" CommandArgument='<%# Eval("phrase_id") %>' Text="Edit" CssClass="btn-secondary" />
+                        <asp:Button runat="server" CommandName="DeletePhrase" CommandArgument='<%# Eval("phrase_id") %>' Text="Delete" CssClass="btn-danger"
+                            OnClientClick="return confirm('Are you sure you want to delete this phrase?');" />
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
 
-            <asp:GridView ID="gvPhrases" runat="server" AutoGenerateColumns="False" CssClass="table"
-                DataKeyNames="phrase_id" OnRowCommand="gvPhrases_RowCommand">
-                <Columns>
-                    <asp:BoundField DataField="phrase_id" HeaderText="ID" />
-                    <asp:BoundField DataField="malay_text" HeaderText="Malay" />
-                    <asp:BoundField DataField="english_text" HeaderText="English" />
-                    <asp:BoundField DataField="pronunciation" HeaderText="Pronunciation" />
-                    <asp:BoundField DataField="cultural_note" HeaderText="Note" />
-                    <asp:BoundField DataField="audio_url" HeaderText="Audio" />
-                    <asp:TemplateField HeaderText="Actions">
-                        <ItemTemplate>
-                            <asp:Button runat="server" CommandName="EditPhrase" CommandArgument='<%# Eval("phrase_id") %>' Text="Edit" CssClass="btn-secondary" />
-                            <asp:Button runat="server" CommandName="DeletePhrase" CommandArgument='<%# Eval("phrase_id") %>' Text="Delete" CssClass="btn-danger" OnClientClick="return confirm('Are you sure you want to delete this phrase?');" />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
-            </asp:GridView>
-
-            <asp:Label ID="lblMessage" runat="server" ForeColor="Green"></asp:Label>
-        </div>
-    </form>
+        <asp:Label ID="lblMessage" runat="server" ForeColor="Green"></asp:Label>
+    </div>
+</form>
 </body>
 </html>

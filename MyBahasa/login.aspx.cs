@@ -46,6 +46,20 @@ namespace MyBahasa
                             lblMsg.Text = "✅ Login successful!";
                             lblErr.Text = "";
 
+                            // ✅ Return user to their intended page if applicable
+                            string returnUrl = Request.QueryString["returnUrl"];
+                            if (!string.IsNullOrEmpty(returnUrl))
+                            {
+                                // Prevent open redirect vulnerabilities
+                                if (!returnUrl.StartsWith("http", StringComparison.OrdinalIgnoreCase) &&
+                                    !returnUrl.Contains("://"))
+                                {
+                                    Response.Redirect(returnUrl);
+                                    return;
+                                }
+                            }
+
+                            // Default redirects
                             if (role == "admin")
                                 Response.Redirect("adminDashboard.aspx");
                             else

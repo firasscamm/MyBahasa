@@ -11,7 +11,7 @@ namespace MyBahasa
 {
 
 
-    public partial class ManagePhrases
+    public partial class ManageChoices
     {
 
         /// <summary>
@@ -24,13 +24,13 @@ namespace MyBahasa
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// lblLessonTitle control.
+        /// lblQuestionText control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLessonTitle;
+        protected global::System.Web.UI.WebControls.Label lblQuestionText;
 
         /// <summary>
         /// btnAddNew control.
@@ -60,67 +60,31 @@ namespace MyBahasa
         protected global::System.Web.UI.WebControls.Label lblFormTitle;
 
         /// <summary>
-        /// txtMalay control.
+        /// txtChoice control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMalay;
+        protected global::System.Web.UI.WebControls.TextBox txtChoice;
 
         /// <summary>
-        /// txtEnglish control.
+        /// chkIsCorrect control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEnglish;
+        protected global::System.Web.UI.WebControls.CheckBox chkIsCorrect;
 
         /// <summary>
-        /// txtPronunciation control.
+        /// hfChoiceId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPronunciation;
-
-        /// <summary>
-        /// txtNote control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNote;
-
-        /// <summary>
-        /// txtAudio control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAudio;
-
-        /// <summary>
-        /// txtVideo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtVideo;
-
-        /// <summary>
-        /// hfPhraseId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfPhraseId;
+        protected global::System.Web.UI.WebControls.HiddenField hfChoiceId;
 
         /// <summary>
         /// btnSave control.
@@ -141,13 +105,13 @@ namespace MyBahasa
         protected global::System.Web.UI.WebControls.Button btnCancel;
 
         /// <summary>
-        /// gvPhrases control.
+        /// gvChoices control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvPhrases;
+        protected global::System.Web.UI.WebControls.GridView gvChoices;
 
         /// <summary>
         /// lblMessage control.

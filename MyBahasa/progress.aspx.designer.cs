@@ -87,6 +87,24 @@ namespace MyBahasa
         protected global::System.Web.UI.WebControls.Panel pnlLessons;
 
         /// <summary>
+        /// rptLessonDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptLessonDetails;
+
+        /// <summary>
+        /// lblNoLessons control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoLessons;
+
+        /// <summary>
         /// pnlPractice control.
         /// </summary>
         /// <remarks>
@@ -94,5 +112,23 @@ namespace MyBahasa
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlPractice;
+
+        /// <summary>
+        /// rptPractice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptPractice;
+
+        /// <summary>
+        /// lblNoPractice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoPractice;
     }
 }

@@ -89,12 +89,15 @@
         <h2 style="text-align:center; margin-top:40px;">Learning Modules</h2>
         <p style="text-align:center; color:#555;">Choose a lesson to start learning Bahasa Melayu phrases and vocabulary</p>
 
+        <!-- Tabs for filtering -->
         <div class="tabs">
-            <asp:Button ID="btnBeginner" runat="server" Text="Beginner" CssClass="tab active" OnClick="btnBeginner_Click" />
+            <asp:Button ID="btnAll" runat="server" Text="All" CssClass="tab active" OnClick="btnAll_Click" />
+            <asp:Button ID="btnBeginner" runat="server" Text="Beginner" CssClass="tab" OnClick="btnBeginner_Click" />
             <asp:Button ID="btnIntermediate" runat="server" Text="Intermediate" CssClass="tab" OnClick="btnIntermediate_Click" />
             <asp:Button ID="btnAdvanced" runat="server" Text="Advanced" CssClass="tab" OnClick="btnAdvanced_Click" />
         </div>
 
+        <!-- Lesson Cards -->
         <div class="lesson-grid">
             <asp:Repeater ID="rptLessons" runat="server">
                 <ItemTemplate>
@@ -110,5 +113,7 @@
                 </ItemTemplate>
             </asp:Repeater>
         </div>
+
+        <asp:Label ID="lblMessage" runat="server" Text="" ForeColor="Gray" Style="display:block;text-align:center;margin-top:20px;"></asp:Label>
     </div>
 </asp:Content>

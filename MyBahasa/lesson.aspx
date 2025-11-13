@@ -10,7 +10,7 @@
         body {
             font-family: 'Segoe UI', sans-serif;
             background-color: #f9fafb;
-            display: flex;
+            display: flex;  
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -39,7 +39,6 @@
             margin-bottom: 40px;
         }
 
-        /* === Split Layout === */
         .content-section {
             display: flex;
             justify-content: space-between;
@@ -49,7 +48,6 @@
             margin-bottom: 40px;
         }
 
-        /* Left: Video */
         .video-box {
             flex: 1;
             min-width: 420px;
@@ -62,7 +60,6 @@
             border: none;
         }
 
-        /* Right: Text info */
         .info-box {
             flex: 1;
             min-width: 420px;
@@ -111,7 +108,6 @@
             margin-top: 10px;
         }
 
-        /* Progress text */
         .progress-text {
             font-size: 14px;
             color: #666;
@@ -119,7 +115,6 @@
             text-align: center;
         }
 
-        /* Buttons */
         .buttons {
             display: flex;
             justify-content: center;
@@ -187,17 +182,13 @@
 <body>
     <form id="form1" runat="server">
         <div class="lesson-container fade">
-            <!-- Lesson Title -->
             <asp:Label ID="lblLessonTitle" runat="server" CssClass="lesson-title"></asp:Label>
 
-            <!-- Content Section: Left (Video) + Right (Info) -->
             <div class="content-section">
-                <!-- Left: Video -->
                 <div class="video-box">
-                    <div id="videoContainer" runat="server"></div>
+                    <asp:Literal ID="ltlVideo" runat="server"></asp:Literal>
                 </div>
 
-                <!-- Right: Lesson Info -->
                 <div class="info-box">
                     <div class="lang-label">MALAY</div>
                     <asp:Label ID="lblMalayText" runat="server" CssClass="phrase"></asp:Label>
@@ -215,16 +206,15 @@
                 </div>
             </div>
 
-            <!-- Progress -->
             <asp:Label ID="lblProgress" runat="server" CssClass="progress-text"></asp:Label>
 
-            <!-- Buttons -->
             <div class="buttons">
                 <asp:Button ID="btnPrev" runat="server" Text="Previous" CssClass="btn" OnClick="btnPrev_Click" />
                 <asp:Button ID="btnNext" runat="server" Text="Next" CssClass="btn" OnClick="btnNext_Click" />
+                <asp:Button ID="btnQuiz" runat="server" Text="Take Quiz" CssClass="btn" OnClick="btnQuiz_Click" Visible="false" />
+
             </div>
 
-            <!-- Return -->
             <asp:Button ID="btnReturn" runat="server" Text="Return to Learn" CssClass="btn return-btn" OnClick="btnReturn_Click" />
         </div>
     </form>

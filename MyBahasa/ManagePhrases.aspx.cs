@@ -55,7 +55,7 @@ namespace MyBahasa
             pnlForm.Visible = true;
             lblFormTitle.Text = "Add New Phrase";
             hfPhraseId.Value = "";
-            txtMalay.Text = txtEnglish.Text = txtPronunciation.Text = txtNote.Text = txtAudio.Text = "";
+            txtMalay.Text = txtEnglish.Text = txtPronunciation.Text = txtNote.Text = txtAudio.Text = txtVideo.Text = "";
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -72,14 +72,18 @@ namespace MyBahasa
 
                 if (hfPhraseId.Value == "")
                 {
-                    cmd = new SqlCommand(@"INSERT INTO LessonPhrases (lesson_id, malay_text, english_text, pronunciation, cultural_note, audio_url) 
-                                           VALUES (@lesson_id, @malay, @english, @pronounce, @note, @audio)", con);
+                    cmd = new SqlCommand(@"
+                        INSERT INTO LessonPhrases 
+                        (lesson_id, malay_text, english_text, pronunciation, cultural_note, audio_url, video_url)
+                        VALUES (@lesson_id, @malay, @english, @pronounce, @note, @audio, @video)", con);
                 }
                 else
                 {
-                    cmd = new SqlCommand(@"UPDATE LessonPhrases 
-                                           SET malay_text=@malay, english_text=@english, pronunciation=@pronounce, cultural_note=@note, audio_url=@audio 
-                                           WHERE phrase_id=@id", con);
+                    cmd = new SqlCommand(@"
+                        UPDATE LessonPhrases 
+                        SET malay_text=@malay, english_text=@english, pronunciation=@pronounce, 
+                            cultural_note=@note, audio_url=@audio, video_url=@video 
+                        WHERE phrase_id=@id", con);
                     cmd.Parameters.AddWithValue("@id", hfPhraseId.Value);
                 }
 
@@ -89,6 +93,7 @@ namespace MyBahasa
                 cmd.Parameters.AddWithValue("@pronounce", txtPronunciation.Text.Trim());
                 cmd.Parameters.AddWithValue("@note", txtNote.Text.Trim());
                 cmd.Parameters.AddWithValue("@audio", txtAudio.Text.Trim());
+                cmd.Parameters.AddWithValue("@video", txtVideo.Text.Trim());
                 cmd.ExecuteNonQuery();
             }
 
@@ -117,6 +122,7 @@ namespace MyBahasa
                         txtPronunciation.Text = dr["pronunciation"].ToString();
                         txtNote.Text = dr["cultural_note"].ToString();
                         txtAudio.Text = dr["audio_url"].ToString();
+                        txtVideo.Text = dr["video_url"].ToString();
                         pnlForm.Visible = true;
                         lblFormTitle.Text = "Edit Phrase";
                     }

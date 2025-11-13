@@ -108,6 +108,24 @@
             width: 100% !important;
             height: 350px !important;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: #007b83;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
     </style>
 
     <div class="progress-container">
@@ -151,41 +169,68 @@
 
         <!-- Lesson Details -->
         <asp:Panel ID="pnlLessons" runat="server" Visible="false">
-            <div class="placeholder">Lesson Details will appear here in the next phase.</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Lesson</th>
+                        <th>Completion %</th>
+                        <th>Score</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <asp:Repeater ID="rptLessonDetails" runat="server">
+                        <ItemTemplate>
+                            <tr>
+                                <td><%# Eval("CourseTitle") %></td>
+                                <td><%# Eval("LessonTitle") %></td>
+                                <td><%# Eval("CompletionPercent") %>%</td>
+                                <td><%# Eval("Score") %>%</td>
+                                <td><%# Eval("LastUpdated", "{0:dd MMM yyyy}") %></td>
+                            </tr>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </tbody>
+            </table>
+            <asp:Label ID="lblNoLessons" runat="server" Visible="false"
+                ForeColor="Gray" Font-Size="14px"
+                Text="You haven't started any lessons yet. Go to the Learn page to begin!"></asp:Label>
         </asp:Panel>
 
         <!-- Practice History -->
         <asp:Panel ID="pnlPractice" runat="server" Visible="false">
-            <div class="placeholder">Practice History will appear here in the next phase.</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lesson</th>
+                        <th>Score</th>
+                        <th>Total Questions</th>
+                        <th>Date Taken</th>
+                        <th>Review</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <asp:Repeater ID="rptPractice" runat="server">
+                        <ItemTemplate>
+                            <tr>
+                                <td><%# Eval("LessonTitle") %></td>
+                                <td><%# Eval("Score") %></td>
+                                <td><%# Eval("TotalQuestions") %></td>
+                                <td><%# Eval("TakenAt", "{0:dd MMM yyyy, hh:mm tt}") %></td>
+                                <td>
+                                    <a href='ReviewAttempt.aspx?attempt_id=<%# Eval("AttemptId") %>' style="color:#007b83;">View</a>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </tbody>
+            </table>
+            <asp:Label ID="lblNoPractice" runat="server" Visible="false"
+                ForeColor="Gray" Font-Size="14px"
+                Text="You haven't completed any quizzes yet. Go to a lesson and click 'Take Quiz' to begin!"></asp:Label>
         </asp:Panel>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script runat="server">
-        protected string chartLabels = "[]";
-        protected string chartData = "[]";
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const ctx = document.getElementById('progressChart');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: <%= chartLabels %>,
-                    datasets: [{
-                        label: 'Average Completion (%)',
-                        data: <%= chartData %>,
-                        backgroundColor: '#00a89d',
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: { beginAtZero: true, max: 100, title: { display: true, text: 'Completion %' } }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-        });
-    </script>
 </asp:Content>

@@ -33,13 +33,13 @@ namespace MyBahasa
         protected global::System.Web.UI.WebControls.Label lblLessonTitle;
 
         /// <summary>
-        /// videoContainer control.
+        /// ltlVideo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl videoContainer;
+        protected global::System.Web.UI.WebControls.Literal ltlVideo;
 
         /// <summary>
         /// lblMalayText control.
@@ -112,6 +112,15 @@ namespace MyBahasa
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnNext;
+
+        /// <summary>
+        /// btnQuiz control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnQuiz;
 
         /// <summary>
         /// btnReturn control.

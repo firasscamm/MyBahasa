@@ -12,14 +12,12 @@ namespace MyBahasa
         private readonly string conStr =
             WebConfigurationManager.ConnectionStrings["MyBahasaDBConnectionString"].ConnectionString;
 
-        // Cache questions (with choices) for this render
         private List<QuestionModel> _questions;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                // require login to take a quiz
                 if (Session["user_id"] == null)
                 {
                     Response.Redirect("login.aspx?returnUrl=" + Server.UrlEncode(Request.RawUrl));
@@ -30,7 +28,6 @@ namespace MyBahasa
                 {
                     LoadLessonTitle(lessonId);
                     _questions = LoadQuestions(lessonId);
-                    // stash in ViewState for ItemDataBound usage on first render
                     ViewState["questions"] = _questions;
                     rptQuestions.DataSource = _questions;
                     rptQuestions.DataBind();
@@ -42,7 +39,6 @@ namespace MyBahasa
             }
             else
             {
-                // recover questions list for postback events
                 _questions = ViewState["questions"] as List<QuestionModel>;
             }
         }
@@ -66,9 +62,8 @@ namespace MyBahasa
             {
                 con.Open();
 
-                // questions
                 using (SqlCommand qCmd = new SqlCommand(
-                           "SELECT question_id, stem_text FROM Questions WHERE lesson_id=@id ORDER BY question_id", con))
+                    "SELECT question_id, stem_text FROM Questions WHERE lesson_id=@id ORDER BY question_id", con))
                 {
                     qCmd.Parameters.AddWithValue("@id", lessonId);
                     using (SqlDataReader qReader = qCmd.ExecuteReader())
@@ -85,11 +80,10 @@ namespace MyBahasa
                     }
                 }
 
-                // choices for each question
                 foreach (var q in list)
                 {
                     using (SqlCommand cCmd = new SqlCommand(
-                               "SELECT choice_id, choice_text, is_correct FROM Choices WHERE question_id=@qid ORDER BY choice_id", con))
+                        "SELECT choice_id, choice_text, is_correct FROM Choices WHERE question_id=@qid ORDER BY choice_id", con))
                     {
                         cCmd.Parameters.AddWithValue("@qid", q.QuestionID);
                         using (SqlDataReader cReader = cCmd.ExecuteReader())
@@ -100,7 +94,8 @@ namespace MyBahasa
                                 {
                                     ChoiceID = (int)cReader["choice_id"],
                                     ChoiceText = cReader["choice_text"].ToString(),
-                                    IsCorrect = Convert.ToBoolean(cReader["is_correct"])
+                                    IsCorrect = Convert.ToBoolean(cReader["is_correct"]),
+                                    QuestionID = q.QuestionID
                                 });
                             }
                         }
@@ -111,43 +106,26 @@ namespace MyBahasa
             return list;
         }
 
-        // Bind child choices for each question and set radio GroupName
         protected void rptQuestions_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType != ListItemType.Item && e.Item.ItemType != ListItemType.AlternatingItem) return;
 
             var question = (QuestionModel)e.Item.DataItem;
-
             var rptChoices = (Repeater)e.Item.FindControl("rptChoices");
             rptChoices.DataSource = question.Choices;
             rptChoices.DataBind();
-
-            // Store question ID in a HiddenField
-            var hfQuestionId = (HiddenField)e.Item.FindControl("hfQuestionId");
-            if (hfQuestionId != null)
-            {
-                hfQuestionId.Value = question.QuestionID.ToString();
-            }
         }
 
-        // For each choice row: set the RadioButton GroupName to "q{QuestionID}"
         protected void rptChoices_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType != ListItemType.Item && e.Item.ItemType != ListItemType.AlternatingItem) return;
 
-            // Get parent question RepeaterItem
-            var parentQuestionItem = (RepeaterItem)((Repeater)e.Item.NamingContainer).NamingContainer;
-
-            // Get question ID from HiddenField
-            var hfQuestionId = (HiddenField)parentQuestionItem.FindControl("hfQuestionId");
-            string qid = hfQuestionId?.Value ?? "0";
-
+            var choice = (ChoiceModel)e.Item.DataItem;
             var rb = (RadioButton)e.Item.FindControl("rbChoice");
 
-            // Enforce single-answer by group per question
             if (rb != null)
             {
-                rb.GroupName = "question_" + qid;
+                rb.GroupName = "question_" + choice.QuestionID;
             }
         }
 
@@ -165,7 +143,6 @@ namespace MyBahasa
             {
                 con.Open();
 
-                // create attempt
                 using (SqlCommand cmdAttempt = new SqlCommand(@"
                     INSERT INTO Attempts (user_id, lesson_id, score, total_questions, correct_answers, taken_at)
                     OUTPUT INSERTED.attempt_id
@@ -176,7 +153,6 @@ namespace MyBahasa
                     attemptId = (int)cmdAttempt.ExecuteScalar();
                 }
 
-                // walk questions on the page to detect selected choice
                 foreach (RepeaterItem qItem in rptQuestions.Items)
                 {
                     var hfQ = (HiddenField)qItem.FindControl("hfQuestionId");
@@ -185,7 +161,6 @@ namespace MyBahasa
                     int questionId = Convert.ToInt32(hfQ.Value);
                     totalQuestions++;
 
-                    // find selected radio in this question
                     int? selectedChoiceId = null;
                     var choicesRepeater = (Repeater)qItem.FindControl("rptChoices");
                     foreach (RepeaterItem cItem in choicesRepeater.Items)
@@ -238,25 +213,19 @@ namespace MyBahasa
                 }
             }
 
-            // Calculate score and update Progress table
             var finalScore = (totalQuestions > 0)
                 ? Math.Round((decimal)correctAnswers / totalQuestions * 100, 2)
                 : 0;
 
-            // Update Progress table with quiz score
             UpdateProgressWithQuizScore(userId, lessonId, finalScore);
-
-            // Redirect to ReviewAttempt page
             Response.Redirect($"ReviewAttempt.aspx?attempt_id={attemptId}");
         }
 
-        // Method to update Progress table with quiz score
         private void UpdateProgressWithQuizScore(int userId, int lessonId, decimal score)
         {
-            string conStr = WebConfigurationManager.ConnectionStrings["MyBahasaDBConnectionString"].ConnectionString;
             using (SqlConnection con = new SqlConnection(conStr))
             {
-                string query = @"git
+                string query = @"
                     IF EXISTS (SELECT 1 FROM Progress WHERE user_id = @user_id AND lesson_id = @lesson_id)
                         UPDATE Progress 
                         SET score = @score, completion_percent = 100, last_updated = GETDATE()
@@ -275,7 +244,6 @@ namespace MyBahasa
             }
         }
 
-        // Data models
         [Serializable]
         public class QuestionModel
         {
@@ -290,6 +258,7 @@ namespace MyBahasa
             public int ChoiceID { get; set; }
             public string ChoiceText { get; set; }
             public bool IsCorrect { get; set; }
+            public int QuestionID { get; set; }
         }
     }
 }
